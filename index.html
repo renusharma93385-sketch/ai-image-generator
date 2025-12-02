@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Image Generator - 4K Quality</title>
+    <title>Free AI Image Generator - No Login Required</title>
     <style>
         * {
             margin: 0;
@@ -47,7 +47,7 @@
 
         .badge {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
             padding: 6px 15px;
             border-radius: 20px;
@@ -119,10 +119,6 @@
             border-color: #667eea;
         }
 
-        .select-input:focus {
-            border-color: #764ba2;
-        }
-
         .generate-btn {
             width: 100%;
             padding: 18px;
@@ -140,10 +136,6 @@
         .generate-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-
-        .generate-btn:active {
-            transform: translateY(0);
         }
 
         .generate-btn:disabled {
@@ -233,6 +225,12 @@
             color: #667eea;
             font-size: 16px;
             font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .loading-subtext {
+            color: #999;
+            font-size: 13px;
         }
 
         .examples {
@@ -268,67 +266,71 @@
             font-size: 14px;
         }
 
-        .error {
-            background: #fee;
-            color: #c33;
+        .info-box {
+            background: #e0f2fe;
+            border-left: 4px solid #0284c7;
             padding: 15px;
-            border-radius: 10px;
+            border-radius: 8px;
             margin-bottom: 20px;
-            display: none;
         }
 
-        .error.active {
-            display: block;
+        .info-box p {
+            color: #0c4a6e;
+            font-size: 14px;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎨 AI Image Generator</h1>
-            <p>Create stunning 4K realistic images with AI</p>
-            <span class="badge">POWERED BY GOOGLE GEMINI</span>
+            <h1>🎨 Free AI Image Generator</h1>
+            <p>Create stunning images with AI - No login required!</p>
+            <span class="badge">100% FREE • UNLIMITED USE</span>
         </div>
 
-        <div class="error" id="error"></div>
+        <div class="info-box">
+            <p><strong>✨ Completely Free!</strong> Uses Hugging Face's Stable Diffusion XL model. First generation takes 20-30 seconds (model loading), then 5-10 seconds for each image.</p>
+        </div>
 
         <div class="input-section">
-            <label class="prompt-label">✍️ Describe your image in detail:</label>
+            <label class="prompt-label">✍️ Describe your image:</label>
             <textarea 
                 class="prompt-input" 
                 id="promptInput" 
-                placeholder="Example: A beautiful sunset over mountains with a lake in the foreground, golden hour lighting, photorealistic, 4K quality, detailed landscape photography"
+                placeholder="Example: A beautiful sunset over mountains, golden hour lighting, photorealistic, highly detailed"
             ></textarea>
         </div>
 
         <div class="options">
             <div class="option-group">
-                <label class="option-label">📐 Aspect Ratio</label>
-                <select class="select-input" id="aspectRatio">
-                    <option value="1:1">Square (1:1)</option>
-                    <option value="16:9">Landscape (16:9)</option>
-                    <option value="9:16">Portrait (9:16)</option>
-                    <option value="4:3">Standard (4:3)</option>
-                    <option value="3:4">Vertical (3:4)</option>
+                <label class="option-label">🎨 AI Model</label>
+                <select class="select-input" id="modelSelect">
+                    <option value="stabilityai/stable-diffusion-xl-base-1.0">SDXL (Best Quality)</option>
+                    <option value="runwayml/stable-diffusion-v1-5">SD 1.5 (Faster)</option>
+                    <option value="prompthero/openjourney">OpenJourney (Artistic)</option>
+                    <option value="SG161222/Realistic_Vision_V2.0">Realistic Vision</option>
                 </select>
             </div>
 
             <div class="option-group">
-                <label class="option-label">🔍 Search Grounding</label>
-                <select class="select-input" id="searchGrounding">
-                    <option value="false">Off (Faster)</option>
-                    <option value="true">On (More Accurate)</option>
+                <label class="option-label">📏 Size</label>
+                <select class="select-input" id="sizeSelect">
+                    <option value="512">512x512 (Fast)</option>
+                    <option value="768">768x768 (Balanced)</option>
+                    <option value="1024">1024x1024 (High Quality)</option>
                 </select>
             </div>
         </div>
 
         <button class="generate-btn" id="generateBtn" onclick="generateImage()">
-            🚀 Generate Image
+            🚀 Generate Image (Free)
         </button>
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <div class="loading-text">Creating your masterpiece... ✨</div>
+            <div class="loading-text">Creating your image... ✨</div>
+            <div class="loading-subtext">First time may take 20-30 seconds</div>
         </div>
 
         <div class="result-section" id="resultSection">
@@ -342,30 +344,34 @@
         <div class="examples">
             <h3>💡 Example Prompts (Click to use):</h3>
             <div class="example-item" onclick="useExample(0)">
-                <div class="example-text">A futuristic city at night with neon lights, flying cars, cyberpunk style, highly detailed, 4K</div>
+                <div class="example-text">A futuristic cyberpunk city at night, neon lights, highly detailed, 4K</div>
             </div>
             <div class="example-item" onclick="useExample(1)">
-                <div class="example-text">A cute golden retriever puppy playing in a flower garden, sunny day, professional photography, shallow depth of field</div>
+                <div class="example-text">A cute fluffy cat sitting on a windowsill, sunlight, photorealistic</div>
             </div>
             <div class="example-item" onclick="useExample(2)">
-                <div class="example-text">A delicious chocolate cake with strawberries on top, food photography, studio lighting, mouth-watering, ultra realistic</div>
+                <div class="example-text">A delicious pizza with melted cheese, food photography, professional lighting</div>
             </div>
             <div class="example-item" onclick="useExample(3)">
-                <div class="example-text">An astronaut floating in space with Earth in the background, cinematic lighting, photorealistic, 8K quality</div>
+                <div class="example-text">An astronaut floating in space, Earth in background, cinematic, 8K quality</div>
             </div>
             <div class="example-item" onclick="useExample(4)">
-                <div class="example-text">A cozy coffee shop interior with warm lighting, wooden furniture, plants, aesthetic, Instagram worthy</div>
+                <div class="example-text">A cozy coffee shop interior, warm lighting, plants, aesthetic, detailed</div>
+            </div>
+            <div class="example-item" onclick="useExample(5)">
+                <div class="example-text">A majestic lion in African savanna, golden hour, wildlife photography</div>
             </div>
         </div>
     </div>
 
     <script>
         const examples = [
-            "A futuristic city at night with neon lights, flying cars, cyberpunk style, highly detailed, 4K",
-            "A cute golden retriever puppy playing in a flower garden, sunny day, professional photography, shallow depth of field",
-            "A delicious chocolate cake with strawberries on top, food photography, studio lighting, mouth-watering, ultra realistic",
-            "An astronaut floating in space with Earth in the background, cinematic lighting, photorealistic, 8K quality",
-            "A cozy coffee shop interior with warm lighting, wooden furniture, plants, aesthetic, Instagram worthy"
+            "A futuristic cyberpunk city at night, neon lights, highly detailed, 4K",
+            "A cute fluffy cat sitting on a windowsill, sunlight, photorealistic",
+            "A delicious pizza with melted cheese, food photography, professional lighting",
+            "An astronaut floating in space, Earth in background, cinematic, 8K quality",
+            "A cozy coffee shop interior, warm lighting, plants, aesthetic, detailed",
+            "A majestic lion in African savanna, golden hour, wildlife photography"
         ];
 
         let currentImageUrl = '';
@@ -376,43 +382,49 @@
 
         async function generateImage() {
             const prompt = document.getElementById('promptInput').value.trim();
-            const aspectRatio = document.getElementById('aspectRatio').value;
-            const searchGrounding = document.getElementById('searchGrounding').value === 'true';
+            const model = document.getElementById('modelSelect').value;
+            const size = parseInt(document.getElementById('sizeSelect').value);
 
             if (!prompt) {
-                showError('Please enter a description for your image!');
+                alert('Please enter a description for your image!');
                 return;
             }
 
-            hideError();
             document.getElementById('generateBtn').disabled = true;
             document.getElementById('loading').classList.add('active');
             document.getElementById('resultSection').classList.remove('active');
 
             try {
-                const response = await fetch('https://api.bhindi.io/v1/agents/gemini-nano-banana-pro/generate-image', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        prompt: prompt,
-                        aspectRatio: aspectRatio,
-                        useSearchGrounding: searchGrounding
-                    })
-                });
+                const response = await fetch(
+                    `https://api-inference.huggingface.co/models/${model}`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            inputs: prompt,
+                            parameters: {
+                                width: size,
+                                height: size,
+                                num_inference_steps: 50,
+                                guidance_scale: 7.5
+                            }
+                        })
+                    }
+                );
 
-                const data = await response.json();
-
-                if (data.success && data.data && data.data.imageUrl) {
-                    currentImageUrl = data.data.imageUrl;
-                    document.getElementById('generatedImage').src = currentImageUrl;
-                    document.getElementById('resultSection').classList.add('active');
-                } else {
-                    showError('Failed to generate image. Please try again!');
+                if (!response.ok) {
+                    throw new Error('Generation failed');
                 }
+
+                const blob = await response.blob();
+                currentImageUrl = URL.createObjectURL(blob);
+                
+                document.getElementById('generatedImage').src = currentImageUrl;
+                document.getElementById('resultSection').classList.add('active');
             } catch (error) {
-                showError('Error connecting to AI service. Please try again!');
+                alert('Error generating image. Please try again! The model might be loading for the first time.');
                 console.error('Generation error:', error);
             } finally {
                 document.getElementById('loading').classList.remove('active');
@@ -437,17 +449,7 @@
             document.getElementById('promptInput').focus();
         }
 
-        function showError(message) {
-            const errorDiv = document.getElementById('error');
-            errorDiv.textContent = message;
-            errorDiv.classList.add('active');
-        }
-
-        function hideError() {
-            document.getElementById('error').classList.remove('active');
-        }
-
-        // Enter key support
+        // Ctrl+Enter to generate
         document.getElementById('promptInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.ctrlKey) {
                 generateImage();
